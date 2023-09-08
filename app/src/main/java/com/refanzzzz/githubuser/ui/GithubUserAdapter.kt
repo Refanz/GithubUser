@@ -1,19 +1,18 @@
 package com.refanzzzz.githubuser.ui
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.refanzzzz.githubuser.R
-import org.w3c.dom.Text
+import com.bumptech.glide.Glide
+import com.refanzzzz.githubuser.data.response.GithubUserResponse
+import com.refanzzzz.githubuser.data.response.GithubUserResponseItem
+import com.refanzzzz.githubuser.databinding.ItemUserGithubBinding
 
-class GithubUserAdapter(private val listGithubUser:ArrayList<String>) : RecyclerView.Adapter<GithubUserAdapter.ViewHolder>() {
+class GithubUserAdapter(private val listGithubUser:List<GithubUserResponseItem>) : RecyclerView.Adapter<GithubUserAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_user_github, parent, false)
-        return ViewHolder(view)
+        val binding = ItemUserGithubBinding.inflate(LayoutInflater.from(parent.context),parent, false)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
@@ -21,12 +20,15 @@ class GithubUserAdapter(private val listGithubUser:ArrayList<String>) : Recycler
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
+        with(holder) {
+            with(listGithubUser[position]) {
+                binding.tvUserName.text = this.login
+                binding.tvUserType.text = this.type
+                binding.tvUserId.text = this.id.toString()
+                Glide.with(binding.root).load(this.avatarUrl).into(binding.imgUserList)
+            }
+        }
     }
 
-    inner class ViewHolder(view:View) :RecyclerView.ViewHolder(view) {
-        val ivGithubUser:ImageView = view.findViewById(R.id.img_user_list)
-        val tvUserName:TextView = view.findViewById(R.id.tv_user_name)
-        val tvUserType:TextView = view.findViewById(R.id.tv_user_type)
-    }
+    inner class ViewHolder(val binding:ItemUserGithubBinding) :RecyclerView.ViewHolder(binding.root)
 }
