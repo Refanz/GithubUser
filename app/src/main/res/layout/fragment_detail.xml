@@ -11,4 +11,12 @@
         android:layout_height="match_parent"
         tools:listitem="@layout/item_user_github"/>
 
+    <ProgressBar
+        android:id="@+id/progress_github_user_foll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        style="?attr/progressBarStyle"
+        android:layout_gravity="center"/>
+
 </FrameLayout>

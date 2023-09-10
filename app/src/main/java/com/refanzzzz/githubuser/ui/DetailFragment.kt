@@ -42,6 +42,11 @@ class DetailFragment : Fragment() {
 
         val index = arguments?.getInt(ARG_SECTION_NUMBER, 0)
 
+
+        userFollViewModel.isLoading.observe(viewLifecycleOwner) {
+            showLoading(it)
+        }
+
         if (index == 0) {
             userFollViewModel.listUserGithubFollowers.observe(viewLifecycleOwner) {
                 setUserGithubFoll(it)
@@ -67,5 +72,9 @@ class DetailFragment : Fragment() {
     private fun setUserGithubFoll(userFoll: List<GithubUserResponseItem>) {
         val adapter = GithubUserFollAdapter(userFoll)
         binding.rvGithubFoll.adapter = adapter
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressGithubUserFoll.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }
