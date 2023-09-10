@@ -4,34 +4,33 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.refanzzzz.githubuser.data.response.GithubUserResponseFollowers
 import com.refanzzzz.githubuser.data.response.GithubUserResponseItem
-import com.refanzzzz.githubuser.data.response.GithubUserResponseSearch
 import com.refanzzzz.githubuser.data.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel : ViewModel() {
+class UserFollViewModel : ViewModel() {
 
     companion object {
-        private const val TAG = "MainViewModel"
+        const val TAG = "UserFollViewModel"
     }
 
-    private val _userGithub = MutableLiveData<List<GithubUserResponseItem>>()
-    val userGithub: LiveData<List<GithubUserResponseItem>> = _userGithub
+    private val _listUserGithubFollowers = MutableLiveData<List<GithubUserResponseItem>>()
+    val listUserGithubFollowers: LiveData<List<GithubUserResponseItem>> = _listUserGithubFollowers
 
-    private val _userGithubSearch = MutableLiveData<List<GithubUserResponseItem>>()
-    val userGithubSearch: LiveData<List<GithubUserResponseItem>> = _userGithubSearch
+    private val _listUserGithubFollowing = MutableLiveData<List<GithubUserResponseItem>>()
+    val listUserGithubFollowing: LiveData<List<GithubUserResponseItem>> = _listUserGithubFollowing
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    fun getAllGithubUser() {
+    fun getUserGithubFollowers(name: String) {
         _isLoading.value = true
 
-        val client = ApiConfig.getApiService().getAllUserGithub()
-        client.enqueue(object: Callback<List<GithubUserResponseItem>> {
-
+        val client = ApiConfig.getApiService().getUserGithubFollowers(name)
+        client.enqueue(object : Callback<List<GithubUserResponseItem>> {
             override fun onResponse(
                 call: Call<List<GithubUserResponseItem>>,
                 response: Response<List<GithubUserResponseItem>>
@@ -39,7 +38,7 @@ class MainViewModel : ViewModel() {
                 _isLoading.value = false
 
                 if (response.isSuccessful) {
-                    _userGithub.value = response.body()
+                    _listUserGithubFollowers.value = response.body()
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
@@ -53,32 +52,32 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun getUserGithubByName(query: String) {
+    fun getUserGithubFollowing(name: String) {
         _isLoading.value = true
 
-        val client = ApiConfig.getApiService().getUserGithubByName(query)
-        client.enqueue(object: Callback<GithubUserResponseSearch> {
+        val client = ApiConfig.getApiService().getUserGithubFollowing(name)
+        client.enqueue(object: Callback<List<GithubUserResponseItem>> {
             override fun onResponse(
-                call: Call<GithubUserResponseSearch>,
-                response: Response<GithubUserResponseSearch>
+                call: Call<List<GithubUserResponseItem>>,
+                response: Response<List<GithubUserResponseItem>>
             ) {
                 _isLoading.value = false
 
                 if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    _userGithubSearch.value = responseBody?.items
-                    Log.d(TAG, _userGithubSearch.value.toString())
+                    _listUserGithubFollowing.value = response.body()
                 } else {
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
             }
 
-            override fun onFailure(call: Call<GithubUserResponseSearch>, t: Throwable) {
+            override fun onFailure(call: Call<List<GithubUserResponseItem>>, t: Throwable) {
                 _isLoading.value = false
-                Log.e(TAG, t.message.toString())
+                Log.e(TAG, "onFailure: ${t.message.toString()}")
             }
 
         })
     }
+
+
 
 }

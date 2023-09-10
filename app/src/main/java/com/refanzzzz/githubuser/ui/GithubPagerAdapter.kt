@@ -10,11 +10,11 @@ class GithubPagerAdapter(activity:AppCompatActivity) : FragmentStateAdapter(acti
     override fun createFragment(position: Int): Fragment {
         val fragment = DetailFragment()
 
-        /* fragment.arguments = Bundle().apply {
-            putInt(DetailFragment.ARG_SECTION_NUMBER, position + 1)
-        } */
+        fragment.arguments = Bundle().apply {
+            putInt(DetailFragment.ARG_SECTION_NUMBER, position)
+        }
 
-        return fragment
+        return fragment as Fragment
     }
 
     override fun getItemCount(): Int {

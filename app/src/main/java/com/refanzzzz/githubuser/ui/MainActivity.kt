@@ -1,5 +1,6 @@
 package com.refanzzzz.githubuser.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -30,7 +31,19 @@ class MainActivity : AppCompatActivity() {
                 .setOnEditorActionListener { textView, actionId, event ->
                     sbGithubUser.text = svGithubUser.text
                     svGithubUser.hide()
-                    mainViewModel.getUserGithubByName(svGithubUser.text.toString())
+
+                    if (sbGithubUser.text.isNullOrBlank()) {
+                        mainViewModel.getAllGithubUser()
+                        mainViewModel.userGithub.observe(this@MainActivity) {
+                            setGithubUserData(it)
+                        }
+                    } else {
+                        mainViewModel.getUserGithubByName(svGithubUser.text.toString())
+                        mainViewModel.userGithubSearch.observe(this@MainActivity) {
+                            setGithubUserData(it)
+                        }
+                    }
+
                     false
                 }
         }
@@ -57,9 +70,26 @@ class MainActivity : AppCompatActivity() {
     private fun setGithubUserData(githubUser: List<GithubUserResponseItem>) {
         val adapter = GithubUserAdapter(githubUser)
         binding.rvGithubUser.adapter = adapter
+
+        adapter.setOnItemClickCallback(object: GithubUserAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: GithubUserResponseItem) {
+                showDetailGithubuser(data)
+            }
+        })
+
+        if (adapter.itemCount < 1) {
+            Toast.makeText(this@MainActivity, "Not Found!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressGithubUserList.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showDetailGithubuser(data: GithubUserResponseItem) {
+        //Toast.makeText(this@MainActivity, data.login, Toast.LENGTH_SHORT).show()
+        val detailIntent = Intent(this@MainActivity, DetailActivity::class.java)
+        detailIntent.putExtra(DetailViewModel.EXTRA_NAME, data.login)
+        startActivity(detailIntent)
     }
 }

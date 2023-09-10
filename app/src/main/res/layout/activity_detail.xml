@@ -7,6 +7,17 @@
     android:padding="5dp"
     tools:context=".ui.DetailActivity">
 
+    <ProgressBar
+        android:id="@+id/progress_github_user_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?android:attr/progressBarStyle"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_detail_user"
         android:layout_marginTop="20dp"
@@ -17,7 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_launcher_background" />
+        tools:src="@drawable/ic_launcher_background" />
 
     <TextView
         android:id="@+id/tv_detail_name"
