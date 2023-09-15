@@ -14,7 +14,7 @@ class GithubPagerAdapter(activity:AppCompatActivity) : FragmentStateAdapter(acti
             putInt(DetailFragment.ARG_SECTION_NUMBER, position)
         }
 
-        return fragment as Fragment
+        return fragment
     }
 
     override fun getItemCount(): Int {

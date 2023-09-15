@@ -2,6 +2,7 @@ package com.refanzzzz.githubuser.ui
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.TooltipCompat
@@ -59,6 +60,10 @@ class DetailActivity : AppCompatActivity() {
         detailViewModel.detailGithubUser.observe(this) {
             setGithubUserDetail(it)
         }
+
+        binding.fabFavoriteUser.setOnClickListener {
+            addToFavorite()
+        }
     }
 
     private fun init() {
@@ -76,5 +81,9 @@ class DetailActivity : AppCompatActivity() {
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressGithubUserDetail.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun addToFavorite() {
+        Toast.makeText(this@DetailActivity, binding.tvDetailUsername.text, Toast.LENGTH_SHORT).show()
     }
 }

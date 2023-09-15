@@ -1,7 +1,6 @@
 package com.refanzzzz.githubuser.data.retrofit
 
 import com.refanzzzz.githubuser.data.response.GithubUserResponseDetail
-import com.refanzzzz.githubuser.data.response.GithubUserResponseFollowers
 import com.refanzzzz.githubuser.data.response.GithubUserResponseItem
 import com.refanzzzz.githubuser.data.response.GithubUserResponseSearch
 import retrofit2.Call
@@ -17,11 +16,11 @@ interface ApiService {
     fun getUserGithubByName(@Query("q") q: String): Call<GithubUserResponseSearch>
 
     @GET("users/{name}")
-    fun getUserGithubDetail(@Path("name") name: String) : Call<GithubUserResponseDetail>
+    fun getUserGithubDetail(@Path("name") name: String): Call<GithubUserResponseDetail>
 
     @GET("users/{name}/followers")
     fun getUserGithubFollowers(@Path("name") name: String): Call<List<GithubUserResponseItem>>
 
     @GET("users/{name}/following")
-    fun getUserGithubFollowing(@Path("name") name: String) : Call<List<GithubUserResponseItem>>
+    fun getUserGithubFollowing(@Path("name") name: String): Call<List<GithubUserResponseItem>>
 }
