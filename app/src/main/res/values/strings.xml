@@ -12,4 +12,6 @@
     <string name="tab_text_2">Following</string>
     <string name="content_tab_text">This is Tab %1$d</string>
     <string name="splashscreen_text">My Github App</string>
+    <string name="menu_favorite">Favorites</string>
+    <string name="menu_setting">Settings</string>
 </resources>

@@ -7,8 +7,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.refanzzzz.githubuser.data.response.GithubUserResponseItem
+import com.refanzzzz.githubuser.R
+import com.refanzzzz.githubuser.data.remote.response.GithubUserResponseItem
 import com.refanzzzz.githubuser.databinding.ActivityMainBinding
+import com.refanzzzz.githubuser.ui.adapter.GithubUserAdapter
+import com.refanzzzz.githubuser.ui.viewmodel.DetailViewModel
+import com.refanzzzz.githubuser.ui.viewmodel.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,9 +26,31 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(MainViewModel::class.java)
+        mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
+            MainViewModel::class.java)
 
         with(binding) {
+            sbGithubUser.inflateMenu(R.menu.option_menu)
+            sbGithubUser.setOnMenuItemClickListener {
+               when (it.itemId) {
+                   R.id.menu_favorite -> {
+                       val intent = Intent(this@MainActivity, FavoriteActivity::class.java)
+                       startActivity(intent)
+                       true
+                   }
+
+                   R.id.menu_setting -> {
+                       val intent = Intent(this@MainActivity, SettingActivity::class.java)
+                       startActivity(intent)
+                       true
+                   }
+
+                   else -> {
+                       false
+                   }
+               }
+            }
+
             svGithubUser.setupWithSearchBar(sbGithubUser)
             svGithubUser
                 .editText
@@ -92,4 +118,6 @@ class MainActivity : AppCompatActivity() {
         detailIntent.putExtra(DetailViewModel.EXTRA_NAME, data.login)
         startActivity(detailIntent)
     }
+
+
 }

@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.refanzzzz.githubuser.data.response.GithubUserResponseItem
+import com.refanzzzz.githubuser.data.remote.response.GithubUserResponseItem
 import com.refanzzzz.githubuser.databinding.FragmentDetailBinding
+import com.refanzzzz.githubuser.ui.adapter.GithubUserFollAdapter
+import com.refanzzzz.githubuser.ui.viewmodel.DetailViewModel
+import com.refanzzzz.githubuser.ui.viewmodel.UserFollViewModel
 
 class DetailFragment : Fragment() {
 
@@ -19,7 +22,7 @@ class DetailFragment : Fragment() {
     private var _binding:FragmentDetailBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var userFollViewModel:UserFollViewModel
+    private lateinit var userFollViewModel: UserFollViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,

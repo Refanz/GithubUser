@@ -1,10 +1,10 @@
-package com.refanzzzz.githubuser.ui
+package com.refanzzzz.githubuser.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.refanzzzz.githubuser.data.response.GithubUserResponseItem
+import com.refanzzzz.githubuser.data.remote.response.GithubUserResponseItem
 import com.refanzzzz.githubuser.databinding.ItemUserFollBinding
 
 class GithubUserFollAdapter(private val listUserGithubFoll: List<GithubUserResponseItem>) : RecyclerView.Adapter<GithubUserFollAdapter.ViewHolder>() {

@@ -1,10 +1,11 @@
-package com.refanzzzz.githubuser.data.retrofit
+package com.refanzzzz.githubuser.data.remote.retrofit
 
-import com.refanzzzz.githubuser.data.response.GithubUserResponseDetail
-import com.refanzzzz.githubuser.data.response.GithubUserResponseItem
-import com.refanzzzz.githubuser.data.response.GithubUserResponseSearch
+import com.refanzzzz.githubuser.data.remote.response.GithubUserResponseDetail
+import com.refanzzzz.githubuser.data.remote.response.GithubUserResponseItem
+import com.refanzzzz.githubuser.data.remote.response.GithubUserResponseSearch
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 

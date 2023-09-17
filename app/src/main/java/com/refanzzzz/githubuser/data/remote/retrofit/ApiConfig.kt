@@ -1,4 +1,4 @@
-package com.refanzzzz.githubuser.data.retrofit
+package com.refanzzzz.githubuser.data.remote.retrofit
 
 import com.refanzzzz.githubuser.BuildConfig
 import okhttp3.Interceptor
@@ -20,14 +20,14 @@ class ApiConfig {
             val authInterceptor = Interceptor {chain ->
                 val req = chain.request()
                 val requestHeaders = req.newBuilder()
-                    .addHeader("Authorization", "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")
+                    .addHeader("Authorization", "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")
                     .build()
                 chain.proceed(requestHeaders)
             }
 
             val client = OkHttpClient.Builder()
-                .addInterceptor(authInterceptor)
                 .addInterceptor(loggingInterceptor)
+                .addInterceptor(authInterceptor)
                 .build()
 
             val retrofit = Retrofit.Builder()
