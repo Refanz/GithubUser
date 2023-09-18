@@ -5,31 +5,52 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.refanzzzz.githubuser.R
+import com.refanzzzz.githubuser.data.local.datastore.SettingPreferences
+import com.refanzzzz.githubuser.data.local.datastore.dataStore
 import com.refanzzzz.githubuser.data.remote.response.GithubUserResponseItem
 import com.refanzzzz.githubuser.databinding.ActivityMainBinding
 import com.refanzzzz.githubuser.ui.adapter.GithubUserAdapter
 import com.refanzzzz.githubuser.ui.viewmodel.DetailViewModel
 import com.refanzzzz.githubuser.ui.viewmodel.MainViewModel
+import com.refanzzzz.githubuser.ui.viewmodel.SettingViewModel
+import com.refanzzzz.githubuser.ui.viewmodel.ViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private var _activityMainBinding: ActivityMainBinding? = null
+    private val binding get() = _activityMainBinding
 
     private lateinit var mainViewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding?.root)
 
         mainViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory()).get(
             MainViewModel::class.java)
 
-        with(binding) {
+        val pref = SettingPreferences.getInstance(application.dataStore)
+        val settingsViewModel = ViewModelProvider(this, ViewModelFactory(pref)).get(
+            SettingViewModel::class.java
+        )
+
+        settingsViewModel.getThemeSettings().observe(this@MainActivity) { isDarkModeActive: Boolean ->
+            if (isDarkModeActive) {
+                binding?.sbGithubUser?.menu?.findItem(R.id.menu_favorite)?.icon = getDrawable(R.drawable.baseline_favorite_24_light)
+            } else {
+                binding?.sbGithubUser?.menu?.findItem(R.id.menu_favorite)?.icon = getDrawable(R.drawable.baseline_favorite_24)
+            }
+        }
+
+
+
+        with(binding!!) {
             sbGithubUser.inflateMenu(R.menu.option_menu)
             sbGithubUser.setOnMenuItemClickListener {
                when (it.itemId) {
@@ -90,12 +111,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun initLayoutRecyclerView() {
         val layoutManager = LinearLayoutManager(this)
-        binding.rvGithubUser.layoutManager = layoutManager
+        binding?.rvGithubUser?.layoutManager = layoutManager
     }
 
     private fun setGithubUserData(githubUser: List<GithubUserResponseItem>) {
         val adapter = GithubUserAdapter(githubUser)
-        binding.rvGithubUser.adapter = adapter
+        binding?.rvGithubUser?.adapter = adapter
 
         adapter.setOnItemClickCallback(object: GithubUserAdapter.OnItemClickCallback {
             override fun onItemClicked(data: GithubUserResponseItem) {
@@ -109,7 +130,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.progressGithubUserList.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding?.progressGithubUserList?.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     private fun showDetailGithubuser(data: GithubUserResponseItem) {
@@ -117,6 +138,11 @@ class MainActivity : AppCompatActivity() {
         val detailIntent = Intent(this@MainActivity, DetailActivity::class.java)
         detailIntent.putExtra(DetailViewModel.EXTRA_NAME, data.login)
         startActivity(detailIntent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _activityMainBinding = null
     }
 
 

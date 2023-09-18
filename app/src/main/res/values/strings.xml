@@ -14,4 +14,6 @@
     <string name="splashscreen_text">My Github App</string>
     <string name="menu_favorite">Favorites</string>
     <string name="menu_setting">Settings</string>
+    <string name="app_bar_title">Top App Bar</string>
+    <string name="night_mode">Night Mode</string>
 </resources>
